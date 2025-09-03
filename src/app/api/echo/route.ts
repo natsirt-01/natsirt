@@ -4,29 +4,40 @@ import { db } from "~/server/db";
 import { apiKeys } from "~/server/db/schema";
 import verifyKey from "~/server/key";
 
+// Define the expected request body shape
+interface EchoBody {
+  postBody: string;
+}
+
 export async function POST(req: NextRequest) {
-    const apiKey = req.headers.get("x-api-key") ?? "";
-    const result = await verifyKey(apiKey);
-    
-    if (!result.valid){
-        return Response.json({error: result.reason}, {status: 401});
-    }
+  const apiKey = req.headers.get("x-api-key") ?? "";
+  const result = await verifyKey(apiKey);
 
-    const body = await req.json();
-// const body = await req.json().catch(() => ({}));
+  if (!result.valid) {
+    return Response.json({ error: result.reason }, { status: 401 });
+  }
 
-    const getName = await db
-        .select({id: apiKeys.id, name: apiKeys.name})
-        .from(apiKeys)
-        .where(eq(apiKeys.name, body.postBody));
+  // ✅ Strongly type the request body
+  let body: EchoBody;
+  try {
+    body = (await req.json()) as EchoBody;
+  } catch {
+    return Response.json({ error: "Invalid JSON body" }, { status: 400 });
+  }
 
-    return Response.json(
-        {
-            ok: true,
-            message: "Hello POST", 
-            received: getName,
-            keyId: result.keyId,
-        },
-        {status: 200},
-    );
+  // ✅ body.postBody is now typed as string
+  const getName = await db
+    .select({ id: apiKeys.id, name: apiKeys.name })
+    .from(apiKeys)
+    .where(eq(apiKeys.name, body.postBody));
+
+  return Response.json(
+    {
+      ok: true,
+      message: "Hello POST",
+      received: getName,
+      keyId: result.keyId,
+    },
+    { status: 200 },
+  );
 }
