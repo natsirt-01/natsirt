@@ -87,20 +87,20 @@ export default function KeysPage() {
       <div className="space-y-12 p-10">
         
         {/* Top Bar */}
-        <div className="flex items-center justify-between">
-          <h1 className="text-4xl font-extrabold text-gray-900 drop-shadow-md">
+        <div className="flex items-center justify-between bg-white/70 backdrop-blur-md rounded-2xl shadow-lg px-6 py-4 mb-8">
+          <h1 className="text-4xl font-extrabold text-purple-700 drop-shadow-sm">
             🔑 API Key Dashboard
           </h1>
           <Link href="/docs">
-            <Button className="flex items-center gap-2 rounded-xl bg-white text-purple-700 hover:bg-purple-600 hover:text-white transition">
+            <Button className="flex items-center gap-2 rounded-xl bg-purple-600 text-white hover:bg-purple-700 shadow-md transition">
               <BookOpen className="h-5 w-5" />
-              API Docs
+              API Documents
             </Button>
           </Link>
         </div>
 
-        {/* Cards Row */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* Cards Column - straight layout */}
+        <div className="flex flex-col gap-8">
           {/* Generate API Key */}
           <Card className="rounded-2xl bg-white/90 shadow-lg border border-purple-200 backdrop-blur-sm">
             <CardHeader className="flex items-center justify-between">
@@ -117,42 +117,42 @@ export default function KeysPage() {
               </Button>
             </CardHeader>
             <CardContent>
-              <Input
-                placeholder="Key Name (e.g. production)"
-                className="mt-2 rounded-lg border-gray-300 focus:ring focus:ring-pink-300"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </CardContent>
-          </Card>
+                <Input
+                  placeholder="Key Name (e.g. production)"
+                  className="mt-2 rounded-lg border-gray-300 focus:ring focus:ring-pink-300"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </CardContent>
+            </Card>
 
-          {/* Display New Key */}
-          <Card className="rounded-2xl bg-white/90 shadow-lg border border-sky-200 backdrop-blur-sm">
-            <CardHeader>
-              <CardTitle className="text-xl font-semibold text-sky-700">
-                Your New API Key
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {justCreated ? (
-                <>
-                  <p className="text-sm text-gray-600">Copy your key now:</p>
-                  <div className="mt-2 flex items-center gap-2 rounded-lg bg-gray-100 p-3 shadow-inner">
-                    <code className="break-all font-mono text-sm text-gray-900">
-                      {justCreated.key}
-                    </code>
-                    <CopyButton value={justCreated.key} />
-                  </div>
-                  <p className="mt-2 text-xs text-gray-500">
-                    ⚠️ You won’t be able to see it again.
-                  </p>
-                </>
-              ) : (
-                <p className="text-gray-500">No new key generated yet.</p>
-              )}
-            </CardContent>
-          </Card>
-        </div>
+            {/* Display New Key */}
+            <Card className="rounded-2xl bg-white/90 shadow-lg border border-sky-200 backdrop-blur-sm">
+              <CardHeader>
+                <CardTitle className="text-xl font-semibold text-sky-700">
+                  Your New API Key
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                {justCreated ? (
+                  <>
+                    <p className="text-sm text-gray-600">Copy your key now:</p>
+                    <div className="mt-2 flex items-center gap-2 rounded-lg bg-gray-100 p-3 shadow-inner">
+                      <code className="break-all font-mono text-sm text-gray-900">
+                        {justCreated.key}
+                      </code>
+                      <CopyButton value={justCreated.key} />
+                    </div>
+                    <p className="mt-2 text-xs text-gray-500">
+                      ⚠️ You won’t be able to see it again.
+                    </p>
+                  </>
+                ) : (
+                  <p className="text-gray-500">No new key generated yet.</p>
+                )}
+              </CardContent>
+            </Card>   
+          </div>
 
         {/* Keys Table */}
         <Card className="rounded-2xl bg-white/95 shadow-lg border border-pink-200 backdrop-blur-sm">
@@ -232,6 +232,6 @@ export default function KeysPage() {
           .
         </p>
       </div>
-    </div>
+    </div> 
   );
 }
